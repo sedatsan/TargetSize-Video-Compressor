@@ -1,4 +1,4 @@
-# CMakeList.txt : CMake project for 24mb-video-compressor
+# CMakeLists.txt : CMake project for targetsize-video-compressor
 cmake_minimum_required (VERSION 3.12)
 
 # Enable Hot Reload for MSVC compilers if supported.
@@ -7,7 +7,7 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("24mb-video-compressor")
+project ("targetsize-video-compressor")
 
 # Find dependencies via vcpkg
 find_package(FFMPEG REQUIRED)
@@ -48,7 +48,7 @@ endif()
 
 
 # Add source to this project's executable
-add_executable (24mb-video-compressor 
+add_executable (targetsize-video-compressor 
     "src/main.cpp"
     "src/dialogs.cpp"
     "include/dialogs.hpp"
@@ -63,17 +63,17 @@ add_executable (24mb-video-compressor
 )
 
 # Set C++23 standard
-set_property(TARGET 24mb-video-compressor PROPERTY CXX_STANDARD 23)
-set_property(TARGET 24mb-video-compressor PROPERTY CXX_STANDARD_REQUIRED ON)
+set_property(TARGET targetsize-video-compressor PROPERTY CXX_STANDARD 23)
+set_property(TARGET targetsize-video-compressor PROPERTY CXX_STANDARD_REQUIRED ON)
 
 # Link headers and libraries
-target_include_directories(24mb-video-compressor PRIVATE 
+target_include_directories(targetsize-video-compressor PRIVATE 
     "include"
     ${FFMPEG_INCLUDE_DIRS}
     ${rlimgui_SOURCE_DIR}
 )
-target_compile_definitions(24mb-video-compressor PRIVATE RLIMGUI_STATIC)
-target_link_libraries(24mb-video-compressor PRIVATE 
+target_compile_definitions(targetsize-video-compressor PRIVATE RLIMGUI_STATIC)
+target_link_libraries(targetsize-video-compressor PRIVATE 
     ${FFMPEG_LIBRARIES}
     imgui::imgui
     raylib

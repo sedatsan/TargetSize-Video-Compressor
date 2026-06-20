@@ -1,6 +1,6 @@
-# 24MB Video Compressor
+# TargetSize Video Compressor
 
-A high-performance, batch video compressor for Windows designed to easily compress large video files to meet upload size limits for various platforms (Discord, WhatsApp, Telegram, Email attachments, and X/Twitter). Built with C++23, Raylib, ImGui, and FFmpeg (utilizing hardware-accelerated Windows Media Foundation codecs).
+A high-performance, batch video compressor for Windows designed to easily compress large video files to meet target size upload limits for various platforms (Discord, WhatsApp, Telegram, Email attachments, and X/Twitter). Built with C++23, Raylib, ImGui, and FFmpeg (utilizing hardware-accelerated Windows Media Foundation codecs).
 
 ---
 
@@ -37,7 +37,7 @@ A high-performance, batch video compressor for Windows designed to easily compre
 ## Directory Structure
 
 ```
-24mb-video-compressor/
+targetsize-video-compressor/
 ├── CMakeLists.txt       # Build system configuration
 ├── CMakePresets.json    # Visual Studio CMake build presets
 ├── vcpkg.json           # Declarative dependencies manifest
@@ -68,8 +68,8 @@ A high-performance, batch video compressor for Windows designed to easily compre
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/sedatsan/24mb-video-compressor.git
-   cd 24mb-video-compressor
+   git clone https://github.com/sedatsan/targetsize-video-compressor.git
+   cd targetsize-video-compressor
    ```
 
 2. **Configure CMake**:
@@ -84,7 +84,7 @@ A high-performance, batch video compressor for Windows designed to easily compre
    ```
 
 4. **Run the program**:
-   The output binary will be compiled to `out/build/x64-debug/24mb-video-compressor.exe`. Ensure the local FFmpeg binaries from `vcpkg_installed` are available.
+   The output binary will be compiled to `out/build/x64-debug/targetsize-video-compressor.exe`. Ensure the local FFmpeg binaries from `vcpkg_installed` are available.
 
 ---
 
