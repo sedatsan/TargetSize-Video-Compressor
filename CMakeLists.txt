@@ -50,9 +50,8 @@ endif()
 
 
 # Add source to this project's executable
-add_executable (targetsize-video-compressor 
+set(TARGET_SOURCES
     "src/main.cpp"
-    "src/dialogs.cpp"
     "include/dialogs.hpp"
     "src/TaskQueue.cpp"
     "include/TaskQueue.hpp"
@@ -61,10 +60,17 @@ add_executable (targetsize-video-compressor
     "include/ThreadPool.hpp"
     "src/FFmpegRunner.cpp"
     "include/FFmpegRunner.hpp"
-    "src/ProcessRunnerWin.cpp"
     "include/ProcessRunner.hpp"
     "${rlimgui_SOURCE_DIR}/rlImGui.cpp"
 )
+
+if (WIN32)
+    list(APPEND TARGET_SOURCES "src/dialogs_win.cpp" "src/ProcessRunnerWin.cpp")
+else()
+    list(APPEND TARGET_SOURCES "src/dialogs_stub.cpp" "src/ProcessRunnerPosix.cpp")
+endif()
+
+add_executable (targetsize-video-compressor ${TARGET_SOURCES})
 
 # Set C++23 standard
 set_property(TARGET targetsize-video-compressor PROPERTY CXX_STANDARD 23)
