@@ -1,0 +1,13 @@
+{
+  "name": "video-compressor-24mb",
+  "version-string": "0.1.0",
+  "dependencies": [
+    {
+      "name": "ffmpeg",
+      "features": [
+        "ffmpeg"
+      ]
+    },
+    "imgui"
+  ]
+}

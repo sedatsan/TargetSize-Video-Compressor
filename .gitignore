@@ -1,0 +1,51 @@
+# ==============================================================================
+# 24mb-video-compressor .gitignore
+# ==============================================================================
+
+# CMake build and install directories
+/out/
+/build/
+/out-install/
+cmake-build-*/
+
+# MSVC compiler / Visual Studio files
+/.vs/
+*.user
+*.suo
+*.db
+*.opendb
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.lib
+*.exp
+
+# Package Manager (vcpkg)
+/vcpkg_installed/
+vcpkg-manifest-install.log
+
+# Operating System specific files
+.DS_Store
+Thumbs.db
+
+# User-specific application configuration and outputs
+/imgui.ini
+/settings.txt
+/test_out.mp4
+/test_out_compressed.mp4
+
+# AI Coding Agent Exclusions
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.agents/
+.gemini/
+/brain/
+/scratch/
+/docs/
+
