@@ -1,0 +1,46 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build (Windows)
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set up MSVC Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    - name: Cache vcpkg archives
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/AppData/Local/vcpkg/archives
+          vcpkg_installed
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-
+
+    - name: Configure CMake
+      shell: pwsh
+      run: |
+        $vcpkgToolchain = "$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+        cmake --preset x64-release `
+          "-DCMAKE_TOOLCHAIN_FILE=$vcpkgToolchain" `
+          "-DVCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT"
+
+    - name: Build targetsize-video-compressor
+      shell: pwsh
+      run: |
+        cmake --build out/build/x64-release --config Release
