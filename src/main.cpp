@@ -126,7 +126,6 @@ int main() {
         strncpy_s(outputFolderBuffer, savedOutputDir.c_str(), sizeof(outputFolderBuffer) - 1);
     }
     int taskCounter = 0;
-    int frameCount = 0;
 
     // Presets configuration
     struct TargetSizePreset {
@@ -145,11 +144,7 @@ int main() {
     float customTargetSizeMB = 25.0f;
     bool useCustomSize = false;
 
-    std::println("Entering main event loop...");
     while (!WindowShouldClose()) {
-        if (frameCount < 10) {
-            std::println("Main loop tick #{} (frame time: {:.2f}ms)", frameCount++, GetFrameTime() * 1000.0f);
-        }
         // Handle window resizing
         int currentWidth = GetScreenWidth();
         int currentHeight = GetScreenHeight();

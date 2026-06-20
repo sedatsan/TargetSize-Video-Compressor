@@ -58,14 +58,22 @@ public:
     bool readLine(std::string& line) override {
         if (!hReadPipe) return false;
 
-        // Check if we already have a complete line in our buffer
-        size_t pos = pipeBuffer.find('\n');
-        if (pos != std::string::npos) {
-            line = pipeBuffer.substr(0, pos);
-            if (!line.empty() && line.back() == '\r') {
-                line.pop_back();
+        auto extractLine = [this, &line]() -> bool {
+            size_t pos = pipeBuffer.find_first_of("\r\n");
+            if (pos != std::string::npos) {
+                line = pipeBuffer.substr(0, pos);
+                char delim = pipeBuffer[pos];
+                size_t toErase = 1;
+                if (delim == '\r' && pos + 1 < pipeBuffer.size() && pipeBuffer[pos + 1] == '\n') {
+                    toErase = 2;
+                }
+                pipeBuffer.erase(0, pos + toErase);
+                return true;
             }
-            pipeBuffer.erase(0, pos + 1);
+            return false;
+        };
+
+        if (extractLine()) {
             return true;
         }
 
@@ -93,19 +101,11 @@ public:
         DWORD toRead = (bytesAvail < sizeof(buffer) - 1) ? bytesAvail : (sizeof(buffer) - 1);
         if (ReadFile(hReadPipe, buffer, toRead, &bytesRead, nullptr) && bytesRead > 0) {
             pipeBuffer.append(buffer, bytesRead);
-            
-            pos = pipeBuffer.find('\n');
-            if (pos != std::string::npos) {
-                line = pipeBuffer.substr(0, pos);
-                if (!line.empty() && line.back() == '\r') {
-                    line.pop_back();
-                }
-                pipeBuffer.erase(0, pos + 1);
-                return true;
-            }
+            return extractLine();
         }
         return false;
     }
+
 
     void terminate() override {
         if (hProcess) {
