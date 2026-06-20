@@ -102,7 +102,7 @@ int main() {
     // Set config flags for resizing support
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     std::println("Initializing Raylib window...");
-    InitWindow(screenWidth, screenHeight, "24MB Video Compressor Dashboard");
+    InitWindow(screenWidth, screenHeight, "TargetSize Video Compressor Dashboard");
     SetTargetFPS(60);
     std::println("Raylib window initialized successfully.");
 
@@ -177,10 +177,10 @@ int main() {
         // Create main UI panel spanning the full window
         ImGui::SetNextWindowPos(ImVec2(0, 0));
         ImGui::SetNextWindowSize(ImVec2(static_cast<float>(currentWidth), static_cast<float>(currentHeight)));
-        ImGui::Begin("24MB Video Compressor Utility Dashboard", nullptr, 
+        ImGui::Begin("TargetSize Video Compressor Utility Dashboard", nullptr, 
                      ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 
-        ImGui::TextColored(ImVec4(0.2f, 0.8f, 1.0f, 1.0f), "24MB Batch Video Compressor");
+        ImGui::TextColored(ImVec4(0.2f, 0.8f, 1.0f, 1.0f), "TargetSize Batch Video Compressor");
         ImGui::Separator();
 
         // Settings Section

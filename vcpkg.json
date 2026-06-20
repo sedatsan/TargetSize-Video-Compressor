@@ -1,5 +1,5 @@
 {
-  "name": "video-compressor-24mb",
+  "name": "targetsize-video-compressor",
   "version-string": "0.1.0",
   "dependencies": [
     {
