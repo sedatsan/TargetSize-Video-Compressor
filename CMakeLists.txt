@@ -61,6 +61,8 @@ add_executable (targetsize-video-compressor
     "include/ThreadPool.hpp"
     "src/FFmpegRunner.cpp"
     "include/FFmpegRunner.hpp"
+    "src/ProcessRunnerWin.cpp"
+    "include/ProcessRunner.hpp"
     "${rlimgui_SOURCE_DIR}/rlImGui.cpp"
 )
 
