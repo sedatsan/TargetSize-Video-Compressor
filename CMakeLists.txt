@@ -37,13 +37,15 @@ FetchContent_MakeAvailable(rlimgui)
 set(RLIMGUI_H_PATH "${rlimgui_SOURCE_DIR}/rlImGui.h")
 if (EXISTS "${RLIMGUI_H_PATH}")
     file(READ "${RLIMGUI_H_PATH}" RLIMGUI_H_CONTENT)
-    string(REPLACE 
-        "#elif defined(USE_LIBTYPE_SHARED)"
-        "#elif defined(USE_LIBTYPE_SHARED) && !defined(RLIMGUI_STATIC)"
-        RLIMGUI_H_CONTENT_FIXED
-        "${RLIMGUI_H_CONTENT}"
-    )
-    file(WRITE "${RLIMGUI_H_PATH}" "${RLIMGUI_H_CONTENT_FIXED}")
+    if (NOT RLIMGUI_H_CONTENT MATCHES "RLIMGUI_STATIC")
+        string(REPLACE 
+            "#elif defined(USE_LIBTYPE_SHARED)"
+            "#elif defined(USE_LIBTYPE_SHARED) && !defined(RLIMGUI_STATIC)"
+            RLIMGUI_H_CONTENT_FIXED
+            "${RLIMGUI_H_CONTENT}"
+        )
+        file(WRITE "${RLIMGUI_H_PATH}" "${RLIMGUI_H_CONTENT_FIXED}")
+    endif()
 endif()
 
 
