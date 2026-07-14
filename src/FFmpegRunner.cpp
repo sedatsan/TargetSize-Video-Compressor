@@ -9,6 +9,7 @@
 #include <chrono>
 
 std::wstring FFmpegRunner::getFFmpegPath() {
+#ifdef _WIN32
     // Check if we are running in x64 Debug or Release to locate the relative vcpkg tool path
     if (std::filesystem::exists("vcpkg_installed/x64-windows/tools/ffmpeg/ffmpeg.exe")) {
         return L"vcpkg_installed/x64-windows/tools/ffmpeg/ffmpeg.exe";
@@ -21,6 +22,9 @@ std::wstring FFmpegRunner::getFFmpegPath() {
     }
     // Fall back to PATH environment search
     return L"ffmpeg.exe";
+#else
+    return L"ffmpeg";
+#endif
 }
 
 float FFmpegRunner::getVideoDuration(const std::filesystem::path& path) {
@@ -93,7 +97,12 @@ std::expected<void, std::string> FFmpegRunner::compressVideo(
 
     std::wstringstream cmd;
     cmd << L"\"" << getFFmpegPath() << L"\" -y -i \"" << task.inputPath.wstring() 
-         << L"\" -c:v h264_mf -b:v " << vBitrateKb << L"k -pix_fmt yuv420p -c:a aac -b:a 128k \"" 
+#ifdef _WIN32
+         << L"\" -c:v h264_mf -b:v " 
+#else
+         << L"\" -c:v libx264 -b:v " 
+#endif
+         << vBitrateKb << L"k -pix_fmt yuv420p -c:a aac -b:a 128k \"" 
          << task.outputPath.wstring() << L"\"";
     
     return executeCommand(cmd.str(), task, stopToken, duration);
