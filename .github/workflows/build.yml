@@ -54,7 +54,7 @@ jobs:
       run: |
         mkdir release_package
         cp out/build/x64-release/targetsize-video-compressor.exe release_package/
-        cp out/build/x64-release/vcpkg_installed/x64-windows/tools/ffmpeg/ffmpeg.exe release_package/
+        cp out/build/x64-release/vcpkg_installed/x64-windows/tools/ffmpeg/* release_package/
         Compress-Archive -Path release_package/* -DestinationPath targetsize-video-compressor-windows-x64.zip
 
     - name: Upload Artifact
