@@ -60,7 +60,7 @@ jobs:
       shell: pwsh
       run: |
         cd release_package
-        .\ffmpeg.exe -f lavfi -i color=c=blue:s=640x480:d=2 -vcodec libx264 dummy.mp4
+        .\ffmpeg.exe -f lavfi -i color=c=blue:s=640x480:d=2 -c:v mpeg4 dummy.mp4
         .\targetsize-video-compressor.exe dummy.mp4 5 output_compressed.mp4
         if (-Not (Test-Path output_compressed.mp4)) {
             Write-Error "Test failed: output_compressed.mp4 was not generated"
