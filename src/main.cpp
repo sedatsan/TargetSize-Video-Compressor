@@ -95,7 +95,32 @@ static void HelpMarker(const char* desc) {
     }
 }
 
-int main() {
+#include "FFmpegRunner.hpp"
+#include <iostream>
+
+int main(int argc, char** argv) {
+    if (argc > 1) {
+        // CLI mode for testing / headless operation
+        std::string inputPath = argv[1];
+        float targetSizeMB = (argc > 2) ? std::stof(argv[2]) : 24.0f;
+        std::string outputPath = (argc > 3) ? argv[3] : "output_compressed.mp4";
+
+        CompressionTask task;
+        task.inputPath = inputPath;
+        task.outputPath = outputPath;
+        task.targetSizeMB = targetSizeMB;
+
+        std::stop_source stopSource;
+        auto result = FFmpegRunner::compressVideo(task, stopSource.get_token());
+        
+        if (!result) {
+            std::cerr << "CLI Compression failed: " << result.error() << std::endl;
+            return 1;
+        }
+        std::cout << "CLI Compression successful: " << outputPath << std::endl;
+        return 0;
+    }
+
     const int screenWidth = 1024;
     const int screenHeight = 768;
 

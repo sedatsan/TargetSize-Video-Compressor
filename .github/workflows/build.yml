@@ -55,6 +55,22 @@ jobs:
         mkdir release_package
         cp out/build/x64-release/targetsize-video-compressor.exe release_package/
         cp out/build/x64-release/vcpkg_installed/x64-windows/tools/ffmpeg/* release_package/
+
+    - name: Functional Test
+      shell: pwsh
+      run: |
+        cd release_package
+        .\ffmpeg.exe -f lavfi -i color=c=blue:s=640x480:d=2 -vcodec libx264 dummy.mp4
+        .\targetsize-video-compressor.exe dummy.mp4 5 output_compressed.mp4
+        if (-Not (Test-Path output_compressed.mp4)) {
+            Write-Error "Test failed: output_compressed.mp4 was not generated"
+            exit 1
+        }
+        Write-Host "Functional test passed successfully!"
+
+    - name: Archive Release
+      shell: pwsh
+      run: |
         Compress-Archive -Path release_package/* -DestinationPath targetsize-video-compressor-windows-x64.zip
 
     - name: Upload Artifact
