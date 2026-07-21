@@ -77,33 +77,38 @@ public:
             return true;
         }
 
-        char buffer[512];
-        DWORD bytesRead = 0;
-        DWORD bytesAvail = 0;
+        while (true) {
+            char buffer[512];
+            DWORD bytesRead = 0;
+            DWORD bytesAvail = 0;
 
-        // Non-blocking: Check if there is data in the pipe to avoid blocking
-        BOOL peekOk = PeekNamedPipe(hReadPipe, nullptr, 0, nullptr, &bytesAvail, nullptr);
-        if (!peekOk) {
-            // Pipe might be broken (process exited and closed write handle).
-            // If so, return any remaining data in pipeBuffer.
-            if (!pipeBuffer.empty()) {
-                line = pipeBuffer;
-                pipeBuffer.clear();
-                return true;
+            // Non-blocking: Check if there is data in the pipe to avoid blocking
+            BOOL peekOk = PeekNamedPipe(hReadPipe, nullptr, 0, nullptr, &bytesAvail, nullptr);
+            if (!peekOk) {
+                // Pipe might be broken (process exited and closed write handle).
+                // If so, return any remaining data in pipeBuffer.
+                if (!pipeBuffer.empty()) {
+                    line = pipeBuffer;
+                    pipeBuffer.clear();
+                    return true;
+                }
+                return false;
             }
-            return false;
-        }
 
-        if (bytesAvail == 0) {
-            return false;
-        }
+            if (bytesAvail == 0) {
+                return false;
+            }
 
-        DWORD toRead = (bytesAvail < sizeof(buffer) - 1) ? bytesAvail : (sizeof(buffer) - 1);
-        if (ReadFile(hReadPipe, buffer, toRead, &bytesRead, nullptr) && bytesRead > 0) {
-            pipeBuffer.append(buffer, bytesRead);
-            return extractLine();
+            DWORD toRead = (bytesAvail < sizeof(buffer) - 1) ? bytesAvail : (sizeof(buffer) - 1);
+            if (ReadFile(hReadPipe, buffer, toRead, &bytesRead, nullptr) && bytesRead > 0) {
+                pipeBuffer.append(buffer, bytesRead);
+                if (extractLine()) {
+                    return true;
+                }
+            } else {
+                return false;
+            }
         }
-        return false;
     }
 
 
