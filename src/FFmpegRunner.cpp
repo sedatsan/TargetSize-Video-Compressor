@@ -88,11 +88,13 @@ std::expected<void, std::string> FFmpegRunner::compressVideo(
     task.status = TaskStatus::Compressing;
     task.progress = 0.0f;
 
-    // Ensure output parent directory exists prior to compression execution
-    try {
-        std::filesystem::create_directories(task.outputPath.parent_path());
-    } catch (const std::exception& e) {
-        return std::unexpected(std::string("Failed to create output directory: ") + e.what());
+    // Ensure output directory exists if path contains one
+    if (!task.outputPath.parent_path().empty()) {
+        std::error_code ec;
+        std::filesystem::create_directories(task.outputPath.parent_path(), ec);
+        if (ec) {
+            return std::unexpected("Failed to create output directory: " + ec.message() + ": \"" + task.outputPath.parent_path().string() + "\"");
+        }
     }
 
     std::wstringstream cmd;
