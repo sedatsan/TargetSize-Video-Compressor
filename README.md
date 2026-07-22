@@ -27,6 +27,18 @@ Built with **C++23**, **Raylib**, **Dear ImGui**, and **FFmpeg**, the applicatio
 
 ---
 
+## 📥 Download & Run (No Installation Required)
+
+You do not need to build the application from source. You can download the latest pre-compiled version directly from GitHub:
+
+1. **Download:** Go to the [Releases page](https://github.com/sedatsan/TargetSize-Video-Compressor/releases) and download the latest `TargetSize-Video-Compressor-v*.zip` file.
+2. **Extract:** Extract the `.zip` archive to any folder on your computer. 
+3. **Run:** Double-click on `targetsize-video-compressor.exe` to launch the application.
+
+*Note: The required FFmpeg components are bundled within the `.zip`, so no external dependencies or installations are necessary.*
+
+---
+
 ## 🛠️ Architecture and Engineering Highlights
 
 While the application is optimized specifically for the Windows ecosystem (due to hardware-accelerated Media Foundation `h264_mf` encoding), the project's codebase layout is architecturally decoupled—isolating platform-specific features behind abstract interfaces to support future cross-platform development.
@@ -121,8 +133,8 @@ targetsize-video-compressor/
 ### Build Steps
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/sedatsan/24mb-video-compressor.git
-   cd 24mb-video-compressor
+   git clone https://github.com/sedatsan/TargetSize-Video-Compressor.git
+   cd TargetSize-Video-Compressor
    ```
 2. **Configure with CMake Presets**:
    Set `VCPKG_ROOT` in your environment (or pass it as an argument). Visual Studio will automatically detect the configuration preset `x64-release`:
@@ -143,6 +155,8 @@ The project contains a GitHub Actions build pipeline in [.github/workflows/build
 2. Configures the developer toolchain and compilers.
 3. Leverages GitHub Cache to restore compiled `vcpkg` package archives, reducing dependencies build time.
 4. Generates and compiles the production `Release` build using CMake and Ninja.
+5. Executes an **Automated Functional Test** via a hidden headless CLI mode to mathematically guarantee the executable works before release.
+6. Archives the binary alongside necessary FFmpeg DLLs into a `.zip` and publishes it to the GitHub Releases page.
 
 ---
 
